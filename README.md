@@ -82,6 +82,19 @@ Neste exemplo, a data 2024-11-10 será usada como entrada para o operador etl_pr
 
 Este processo permite que você teste o pipeline com diferentes entradas e valide os resultados no banco de dados ou nas saídas definidas no pipeline.
 
+## Visualização da Base de Dados Alvo
+
+Após rodar o processo ETL, a base de dados PostgreSQL é preenchida com os dados agregados. Abaixo estão as imagens que ilustram o conteúdo das principais tabelas:
+
+1. **Tabela `data`**: Contém os dados agregados com as informações de `timestamp`, `signal_id` e `value`.
+
+   ![Alvo Data](images/alvo_data.jpg)
+
+2. **Tabela `signal`**: Armazena os sinais e seus respectivos identificadores. Cada sinal está vinculado ao seu tipo de agregação.
+
+   ![Alvo Signal](images/alvo_signal.jpg)
+
+Essas imagens ilustram o resultado da execução do processo ETL e como os dados são organizados na base de dados.
 
 
 ## Conclusão
