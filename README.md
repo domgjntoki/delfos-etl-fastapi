@@ -17,7 +17,7 @@ docker compose up -d
 
 Esse comando irá:
 
-1. Subir o container com o **PostgreSQL**.
+1. Subir 2 containers com o **PostgreSQL**, (a base de dados alvo e a base de dados fonte).
 2. Subir o container com o **Dagster**.
 3. Subir o container com o **FastAPI** (servindo os dados).
 4. Iniciar a execução das tarefas ETL automaticamente, conforme a programação definida no Dagster.
@@ -38,54 +38,53 @@ Esse comando irá:
 
 ## Sinais e Agregações Utilizadas
 
-Para realizar as transformações, foram definidos dois sinais principais:
+Para realizar as transformações, foram definidos os seguintes sinais:
 
-- **wind_speed**: velocidade do vento
-- **power**: potência gerada
+- **wind_speed_mean**: média da velocidade do vento
+- **wind_speed_min**: mínimo da velocidade do vento
+- **wind_speed_max**: máximo da velocidade do vento
+- **wind_speed_std**: desvio padrão da velocidade do vento
+- **power_mean**: média da potência gerada
+- **power_min**: mínimo da potência gerada
+- **power_max**: máximo da potência gerada
+- **power_std**: desvio padrão da potência gerada
 
-A seguir estão os tipos de agregação utilizados para cada sinal:
 
-- **mean**: média
-- **min**: mínimo
-- **max**: máximo
-- **std**: desvio padrão
+## Testando no Dagster
 
-Esses sinais são processados pelo Dagster, que realiza as agregações de 10 em 10 minutos, e os dados são inseridos no banco de dados PostgreSQL na tabela `data`.
+Para testar o processo de transformação no Dagster, você pode configurar os inputs diretamente na interface do Dagster ou usando um arquivo de configuração JSON para rodar o pipeline com dados específicos. Abaixo, um exemplo de como configurar o pipeline de teste com um valor de data:
 
-## Estrutura do Banco de Dados
+### Exemplo de Configuração para Teste
 
-O banco de dados PostgreSQL possui duas tabelas principais:
+Você pode fornecer um valor de entrada para o operador `etl_process`, que é o responsável por realizar o processo de ETL (extração, transformação e carga). Para testar o pipeline com uma data específica, use a seguinte configuração JSON:
 
-1. **signal**: Armazena os sinais com suas respectivas informações.
-    - `id`: Identificador único do sinal (auto-incrementado).
-    - `name`: Nome do sinal (exemplo: `wind_speed_mean`).
-
-2. **data**: Armazena os valores agregados de cada sinal.
-    - `id`: Identificador único da entrada de dados.
-    - `timestamp`: Data e hora do dado agregado.
-    - `signal_id`: Relaciona o dado com um sinal específico.
-    - `value`: Valor agregado (média, mínimo, máximo ou desvio padrão).
-
-### Estrutura de Tabelas SQL
-
-```sql
-CREATE TABLE signal (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE data (
-    id SERIAL PRIMARY KEY,
-    timestamp TIMESTAMP NOT NULL,
-    signal_id INT REFERENCES signal(id),
-    value FLOAT NOT NULL
-);
+```json
+{
+  "ops": {
+    "etl_process": {
+      "inputs": {
+        "date": {
+          "value": "2024-11-10"
+        }
+      }
+    }
+  }
+}
 ```
+
+Neste exemplo, a data 2024-11-10 será usada como entrada para o operador etl_process, e o Dagster irá rodar o pipeline utilizando esta data. Você pode modificar o valor da data para testar diferentes cenários de transformação e inserção de dados.
+
+### Como Executar o Teste
+
+1. No painel do Dagster, selecione o pipeline que deseja testar.
+2. Vá até a seção de "Run Config" e insira o JSON de configuração de teste.
+3. Execute o pipeline para ver o processamento com a data fornecida.
+
+Este processo permite que você teste o pipeline com diferentes entradas e valide os resultados no banco de dados ou nas saídas definidas no pipeline.
+
+
 
 ## Conclusão
 
 Esse projeto foi feito para demonstrar um fluxo de ETL utilizando o Dagster e integração com o FastAPI e PostgreSQL. O código é modular e escalável, permitindo adicionar novas fontes de dados ou sinais no futuro com facilidade.
 
-## Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
