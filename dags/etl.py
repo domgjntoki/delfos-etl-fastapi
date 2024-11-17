@@ -11,10 +11,11 @@ from datetime import timedelta
     partitions_def=DailyPartitionsDefinition(start_date="2023-01-01"),  # Partitioning by day
     required_resource_keys={"source_api", "target_db"},
 )
-def etl_process(context, date):
+def etl_process(context, date=None):
     source_api = context.resources.source_api
     target_db_url = context.resources.target_db
 
+    date = date or context.partition_key
     # Convert date to datetime and calculate the next day
     start_date = pd.to_datetime(date)
     end_date = start_date + timedelta(days=1)
