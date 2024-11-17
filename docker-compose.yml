@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  fonte-db:
+    image: postgres:15
+    container_name: fonte-db
+    environment:
+      POSTGRES_USER: fonte_user
+      POSTGRES_PASSWORD: fonte_pass
+      POSTGRES_DB: fonte
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/fonte:/docker-entrypoint-initdb.d
+    networks:
+      - etl-network
+
+  alvo-db:
+    image: postgres:15
+    container_name: alvo-db
+    environment:
+      POSTGRES_USER: alvo_user
+      POSTGRES_PASSWORD: alvo_pass
+      POSTGRES_DB: alvo
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db/alvo:/docker-entrypoint-initdb.d
+    networks:
+      - etl-network
+
+  fastapi:
+    build: ./api
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - fonte-db
+    networks:
+      - etl-network
+
+  dagster:
+    build: ./dags
+    container_name: dagster
+    environment:
+      - DAGSTER_HOME=/opt/dagster/dagster_home
+    volumes:
+      - ./dags:/opt/dagster/app  # Mount your repository code here (assets, jobs, etc.)
+    ports:
+      - "3000:3000"  # Exposes Dagster's web server on port 3000
+    depends_on:
+      - alvo-db
+      - fastapi
+    networks:
+      - etl-network
+
+networks:
+  etl-network:
+    driver: bridge

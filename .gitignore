@@ -1,0 +1,48 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.pdb
+
+# Virtual environment directories
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE configurations (VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# Docker and other container files
+docker-compose.override.yml
+*.log
+
+# Python wheels (generated)
+*.whl
+
+# Local settings for IDEs
+*.swp
+*.swo
