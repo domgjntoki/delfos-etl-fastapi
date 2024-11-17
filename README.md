@@ -76,9 +76,10 @@ Neste exemplo, a data 2024-11-10 será usada como entrada para o operador etl_pr
 
 ### Como Executar o Teste
 
-1. No painel do Dagster, selecione o pipeline que deseja testar.
-2. Vá até a seção de "Run Config" e insira o JSON de configuração de teste.
-3. Execute o pipeline para ver o processamento com a data fornecida.
+1. No painel do Dagster, selecione o aba Jobs, e selecione o job etl_job
+2. Clique na opção "LaunchPad" para abrir o menu de configuração do pipeline.
+3. Cole o JSON de configuração fornecido acima no campo de configuração.
+4. Execute o pipeline, clicando no botão "Launch Run" para ver o processamento com a data fornecida.
 
 Este processo permite que você teste o pipeline com diferentes entradas e valide os resultados no banco de dados ou nas saídas definidas no pipeline.
 
