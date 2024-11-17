@@ -1,7 +1,7 @@
 
 # Projeto de ETL com Dagster e FastAPI
 
-Este projeto foi desenvolvido como parte de uma seleção de emprego para a Delfos. Ele implementa um processo de ETL (Extract, Transform, Load) utilizando o **Dagster** para orquestrar e automatizar a coleta e processamento de dados. A API **FastAPI** fornece os dados brutos, enquanto o **PostgreSQL** é utilizado para armazenar os resultados agregados.
+Este projeto foi desenvolvido como parte de um teste de programação. Ele implementa um processo de ETL (Extract, Transform, Load) utilizando o **Dagster** para orquestrar e automatizar a coleta e processamento de dados. A API **FastAPI** fornece os dados brutos, enquanto o **PostgreSQL** é utilizado para armazenar os resultados agregados.
 
 ## Visão Geral
 
